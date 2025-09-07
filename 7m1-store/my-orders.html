@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders - 7M1 Store</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .orders-container {
+            min-height: calc(100vh - 80px);
+            background: #f8f9fa;
+            padding: 2rem 0;
+        }
+        
+        .orders-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .orders-header h1 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+        
+        .user-info {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .orders-grid {
+            display: grid;
+            gap: 1rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .order-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-left: 4px solid #667eea;
+        }
+        
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .order-number {
+            font-weight: bold;
+            color: #333;
+            font-size: 1.1rem;
+        }
+        
+        .order-status {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-processing {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .status-delivered {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .order-details {
+            margin-bottom: 1rem;
+        }
+        
+        .order-date {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .order-total {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #10ac84;
+        }
+        
+        .order-items {
+            margin-top: 1rem;
+        }
+        
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f8f9fa;
+        }
+        
+        .order-item:last-child {
+            border-bottom: none;
+        }
+        
+        .item-name {
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .item-quantity {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .item-price {
+            font-weight: 500;
+            color: #667eea;
+        }
+        
+        .empty-orders {
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .empty-orders i {
+            font-size: 4rem;
+            color: #e9ecef;
+            margin-bottom: 1rem;
+        }
+        
+        .login-required {
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .back-to-shop {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: transform 0.3s ease;
+        }
+        
+        .back-to-shop:hover {
+            transform: translateY(-2px);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">
+                    <h2>7M1 Store</h2>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="index.html#products" class="nav-link">Products</a>
+                <a href="index.html#about" class="nav-link">About</a>
+                <a href="index.html#contact" class="nav-link">Contact</a>
+                <a href="my-orders.html" class="nav-link active">My Orders</a>
+            </div>
+            <div class="nav-actions">
+                <button id="auth-btn" class="auth-btn">Login</button>
+                <button id="cart-btn" class="cart-btn">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="cart-count">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Orders Container -->
+    <div class="orders-container">
+        <div class="container">
+            <div class="orders-header">
+                <h1>My Orders</h1>
+                <p>Track and manage your order history</p>
+            </div>
+
+            <!-- User Info (shown when logged in) -->
+            <div id="user-info" class="user-info" style="display: none;">
+                <h3 id="user-welcome">Welcome back!</h3>
+                <p id="user-email"></p>
+            </div>
+
+            <!-- Orders Content -->
+            <div id="orders-content">
+                <div class="loading" style="text-align: center; padding: 2rem;">
+                    <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: #667eea;"></i>
+                    <p>Loading your orders...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <!-- Security Script - Load First -->
+    <script src="js/security.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/cart.js"></script>
+    
+    <script>
+        // My Orders functionality
+        class MyOrders {
+            constructor() {
+                this.currentUser = null;
+                this.init();
+            }
+
+            async init() {
+                try {
+                    // Check if user is logged in
+                    this.currentUser = await supabaseService.getCurrentUser();
+                    
+                    if (!this.currentUser) {
+                        this.showLoginRequired();
+                    } else {
+                        this.showUserInfo();
+                        this.loadUserOrders();
+                    }
+                } catch (error) {
+                    console.error('Error initializing My Orders:', error);
+                    this.showError();
+                }
+            }
+
+            showLoginRequired() {
+                const ordersContent = document.getElementById('orders-content');
+                ordersContent.innerHTML = `
+                    <div class="login-required">
+                        <i class="fas fa-user-lock" style="font-size: 4rem; color: #e9ecef; margin-bottom: 1rem;"></i>
+                        <h3>Login Required</h3>
+                        <p>Please log in to view your order history.</p>
+                        <button onclick="window.authManager?.showAuthModal()" class="back-to-shop">Login</button>
+                        <a href="index.html" class="back-to-shop" style="margin-left: 1rem; background: #6c757d;">Back to Shop</a>
+                    </div>
+                `;
+            }
+
+            showUserInfo() {
+                const userInfo = document.getElementById('user-info');
+                const userWelcome = document.getElementById('user-welcome');
+                const userEmail = document.getElementById('user-email');
+
+                if (userInfo && this.currentUser) {
+                    userWelcome.textContent = `Welcome back, ${this.currentUser.user_metadata?.first_name || this.currentUser.email}!`;
+                    userEmail.textContent = this.currentUser.email;
+                    userInfo.style.display = 'block';
+                }
+            }
+
+            async loadUserOrders() {
+                try {
+                    const orders = await supabaseService.getOrders();
+                    const userOrders = orders.filter(order => 
+                        order.customer_email === this.currentUser.email
+                    );
+
+                    await this.displayOrders(userOrders);
+                } catch (error) {
+                    console.error('Error loading orders:', error);
+                    this.showError();
+                }
+            }
+
+            async displayOrders(orders) {
+                const ordersContent = document.getElementById('orders-content');
+
+                if (orders.length === 0) {
+                    ordersContent.innerHTML = `
+                        <div class="empty-orders">
+                            <i class="fas fa-shopping-bag"></i>
+                            <h3>No Orders Found</h3>
+                            <p>You haven't placed any orders yet. Start shopping to see your order history here!</p>
+                            <a href="index.html#products" class="back-to-shop">Start Shopping</a>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Create order cards asynchronously
+                const orderCards = await Promise.all(
+                    orders.map(order => this.createOrderCard(order))
+                );
+
+                ordersContent.innerHTML = `
+                    <div class="orders-grid">
+                        ${orderCards.join('')}
+                    </div>
+                `;
+            }
+
+            async createOrderCard(order) {
+                const orderDate = new Date(order.created_at).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+
+                // Calculate estimated delivery date (4 days from order date)
+                const estimatedDelivery = new Date(order.created_at);
+                estimatedDelivery.setDate(estimatedDelivery.getDate() + 4);
+                const estimatedDeliveryStr = estimatedDelivery.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+
+                // Get actual order items
+                let orderItems = [];
+                try {
+                    orderItems = await supabaseService.getOrderItems(order.id);
+                    if (orderItems.length === 0) {
+                        // Fallback if no items found
+                        orderItems = [{
+                            product_name: 'Order Items',
+                            quantity: 1,
+                            price: parseFloat(order.total) - 25 // Subtract shipping
+                        }];
+                    }
+                } catch (error) {
+                    console.error('Error loading order items:', error);
+                    orderItems = [{
+                        product_name: 'Order Items',
+                        quantity: 1,
+                        price: parseFloat(order.total) - 25
+                    }];
+                }
+
+                return `
+                    <div class="order-card">
+                        <div class="order-header">
+                            <div class="order-number">Order #${order.order_number || order.id}</div>
+                            <div class="order-status status-${order.status || 'pending'}">
+                                ${order.status || 'pending'}
+                            </div>
+                        </div>
+                        
+                        <div class="order-details">
+                            <div class="order-date">Ordered on ${orderDate}</div>
+                            <div class="order-total">Total: ₹${parseFloat(order.total).toFixed(2)}</div>
+                            <div style="margin-top: 0.5rem; padding: 0.5rem; background: ${order.status === 'delivered' ? '#d4edda' : '#fff3cd'}; border-radius: 6px; font-size: 0.9rem;">
+                                ${order.status === 'delivered' ? 
+                                    '<strong style="color: #155724;">✅ Delivered!</strong>' : 
+                                    `<strong style="color: #856404;">📦 Estimated Delivery: ${estimatedDeliveryStr}</strong>`
+                                }
+                            </div>
+                        </div>
+
+                        <div class="order-items">
+                            <strong>Items Ordered:</strong>
+                            ${orderItems.map(item => `
+                                <div class="order-item">
+                                    <div>
+                                        <div class="item-name">${item.product_name || item.name}</div>
+                                        <div class="item-quantity">Qty: ${item.quantity}</div>
+                                    </div>
+                                    <div class="item-price">₹${parseFloat(item.price).toFixed(2)}</div>
+                                </div>
+                            `).join('')}
+                            <div class="order-item" style="border-top: 1px solid #e9ecef; margin-top: 0.5rem; padding-top: 0.5rem;">
+                                <div>
+                                    <div class="item-name">Shipping</div>
+                                </div>
+                                <div class="item-price">₹25.00</div>
+                            </div>
+                        </div>
+                        
+                        ${order.status === 'delivered' ? `
+                            <div style="text-align: center; margin-top: 1rem; padding: 1rem; background: #d4edda; border-radius: 8px; color: #155724;">
+                                <i class="fas fa-check-circle" style="font-size: 1.5rem; margin-bottom: 0.5rem;"></i>
+                                <div><strong>Order Delivered Successfully!</strong></div>
+                                <div style="font-size: 0.9rem; margin-top: 0.25rem;">Thank you for shopping with us!</div>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }
+
+            showError() {
+                const ordersContent = document.getElementById('orders-content');
+                ordersContent.innerHTML = `
+                    <div class="empty-orders">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>Error Loading Orders</h3>
+                        <p>There was an error loading your orders. Please try again later.</p>
+                        <button onclick="window.location.reload()" class="back-to-shop">Retry</button>
+                        <a href="index.html" class="back-to-shop" style="margin-left: 1rem; background: #6c757d;">Back to Shop</a>
+                    </div>
+                `;
+            }
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            window.myOrders = new MyOrders();
+        });
+    </script>
+</body>
+</html>

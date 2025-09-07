@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7M1 Store - Modern E-commerce</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Delivery Notice -->
+    <div class="delivery-notice">
+        <div class="container">
+            <p><i class="fas fa-info-circle"></i> <strong>Currently delivering to Jammu & Kashmir only!</strong> Available pincodes: 192231, 192233 | Cash on Delivery</p>
+        </div>
+    </div>
+    
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="#home">
+                    <h2>7M1 Store</h2>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="#home" class="nav-link">Home</a>
+                <a href="#products" class="nav-link">Products</a>
+                <a href="#categories" class="nav-link">Categories</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="my-orders.html" class="nav-link" id="my-orders-link" style="display: none;">My Orders</a>
+            </div>
+            <div class="nav-actions">
+                <div class="search-container">
+                    <input type="text" id="search-input" placeholder="Search products...">
+                    <button id="search-btn"><i class="fas fa-search"></i></button>
+                </div>
+                <button id="auth-btn" class="auth-btn">Login</button>
+                <button id="cart-btn" class="cart-btn">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="cart-count">0</span>
+                </button>
+                <button class="mobile-menu-btn" id="mobile-menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1>Welcome to 7M1 Store</h1>
+                <p>Discover amazing products at unbeatable prices</p>
+                <p><small><strong>Now delivering to Jammu & Kashmir!</strong><br>Pincodes: 192231, 192233</small></p>
+                <button class="cta-btn">Shop Now</button>
+            </div>
+            <div class="hero-image">
+                <div class="hero-slideshow" id="hero-slideshow">
+                    <div class="slideshow-container">
+                        <div class="slide active">
+                            <img src="https://tse1.mm.bing.net/th/id/OIP.uHITpNjUwsVe5gunAh4hwgAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Premium Technology" loading="lazy">
+                        </div>
+                        <div class="slide">
+                            <img src="https://th.bing.com/th/id/R.353f1479192a699912ed91e8d9940535?rik=uBaU0TVJclAT%2bg&riu=http%3a%2f%2fpluspng.com%2fimg-png%2flaptop-hd-png-acer-aspire-e1-530-laptop-intel-pentium-2217u-processor-15-6-hd-1178.png&ehk=D8TWz0V4xUmUOr1iBSvZvuRx8M1KYwbPXByNyOVpcqE%3d&risl=&pid=ImgRaw&r=0" alt="Acer Laptop Collection" loading="lazy">
+                        </div>
+                        <div class="slide">
+                            <img src="https://handletheheat.com/wp-content/uploads/2018/02/BAKERY-STYLE-CHOCOLATE-CHIP-COOKIES-9.jpg" alt="Delicious Treats" loading="lazy">
+                        </div>
+                    </div>
+                    <div class="slideshow-navigation">
+                        <button class="slide-btn prev" id="prev-slide">❮</button>
+                        <button class="slide-btn next" id="next-slide">❯</button>
+                    </div>
+                    <div class="slideshow-indicators">
+                        <span class="indicator active" data-slide="0"></span>
+                        <span class="indicator" data-slide="1"></span>
+                        <span class="indicator" data-slide="2"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Categories -->
+    <section id="categories" class="categories-section">
+        <div class="container">
+            <h2 class="section-title">Featured Categories</h2>
+            <div class="categories-grid" id="categories-grid">
+                <!-- Categories will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="products-section">
+        <div class="container">
+            <div class="products-header">
+                <h2 class="section-title">Our Products</h2>
+                <div class="products-filters">
+                    <select id="category-filter">
+                        <option value="">All Categories</option>
+                    </select>
+                    <select id="sort-filter">
+                        <option value="name">Sort by Name</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="newest">Newest First</option>
+                    </select>
+                </div>
+            </div>
+            <div class="products-grid" id="products-grid">
+                <!-- Products will be loaded dynamically -->
+                <div class="loading-spinner">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Loading products...</p>
+                </div>
+            </div>
+            <button id="load-more" class="load-more-btn" style="display: none;">Load More</button>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="about-content">
+                <h2>About 7M1 Store</h2>
+                <p>We're passionate about bringing you the best products at competitive prices. Currently serving Jammu & Kashmir with Cash on Delivery in select pincodes (192231, 192233).</p>
+                <div class="features">
+                    <div class="feature">
+                        <i class="fas fa-shipping-fast"></i>
+                        <h3>J&K Delivery</h3>
+                        <p>Cash on Delivery to pincodes 192231, 192233</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>Secure Payment</h3>
+                        <p>100% secure transactions</p>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-undo"></i>
+                        <h3>Easy Returns</h3>
+                        <p>7-day return policy</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>7M1 Store</h3>
+                    <p>Your trusted online shopping destination in India</p>
+                    <p>Cash on Delivery Available</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#products">Products</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="my-orders.html" id="footer-my-orders-link" style="display: none;">My Orders</a></li>
+                        <li><a href="admin/index.html">Admin Login</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Delivery Information</h4>
+                    <ul>
+                        <li>Cash on Delivery</li>
+                        <li>Free Shipping above ₹999</li>
+                        <li><strong>Delivery to J&K Only</strong></li>
+                        <li>Pincodes: 192231, 192233</li>
+                        <li>GST Invoice Provided</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect With Us</h4>
+                    <div class="social-links">
+                        <a href="mailto:7M1@gmail.com" title="Email Us">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                        <a href="https://www.instagram.com/7m1lifeisarace/" target="_blank" rel="noopener noreferrer" title="Follow us on Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                    <div class="contact-info">
+                        <p><i class="fas fa-envelope"></i> 7M1@gmail.com</p>
+                        <p><i class="fab fa-instagram"></i> @7m1lifeisarace</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 7M1 Store. All rights reserved. | Made in India</p>
+                <p><small>Developed by <strong>Burhan Hamid</strong> | <a href="mailto:burhanhamid912@gmail.com" style="color: #95a5a6;">burhanhamid912@gmail.com</a></small></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Shopping Cart Modal -->
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Shopping Cart</h2>
+                <button class="close-btn" id="close-cart">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="cart-items">
+                    <!-- Cart items will be loaded here -->
+                </div>
+                <div class="cart-summary">
+                    <div class="cart-total">
+                        <span>Total: ₹<span id="cart-total">0.00</span></span>
+                    </div>
+                    <div class="cart-actions">
+                        <button id="clear-cart" class="secondary-btn">Clear Cart</button>
+                        <button id="checkout-btn" class="primary-btn">Checkout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Detail Modal -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="product-modal-title">Product Details</h2>
+                <button class="close-btn" id="close-product">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="product-modal-content">
+                    <!-- Product details will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Authentication Modal -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="auth-modal-title">Login</h2>
+                <button class="close-btn" id="close-auth">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="auth-forms">
+                    <!-- Auth forms will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <!-- Security Script - Load First -->
+    <script src="js/security.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/app.js"></script>
+    <!-- Slideshow functionality -->
+    <script src="test-slideshow.js"></script>
+    <script>
+        // Initialize app
+        setTimeout(() => {
+            if (typeof App !== 'undefined') {
+                window.app = new App();
+            }
+        }, 500);
+        
+    </script>
+    
+    <style>
+    @keyframes slideInRight {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    </style>
+</body>
+</html>

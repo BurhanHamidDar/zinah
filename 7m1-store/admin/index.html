@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - 7M1 Store</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Admin Interface (hidden until authenticated) -->
+    <div id="admin-interface" class="admin-container" style="display: none;">
+        <!-- Admin Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-logo">
+                <h2>7M1 Admin</h2>
+            </div>
+            <nav class="admin-nav">
+                <ul>
+                    <li><a href="#dashboard" class="nav-link active" data-section="dashboard">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a></li>
+                    <li><a href="#products" class="nav-link" data-section="products">
+                        <i class="fas fa-box"></i> Products
+                    </a></li>
+                    <li><a href="#orders" class="nav-link" data-section="orders">
+                        <i class="fas fa-shopping-cart"></i> Orders
+                    </a></li>
+                    <li><a href="#customers" class="nav-link" data-section="customers">
+                        <i class="fas fa-users"></i> Customers
+                    </a></li>
+                </ul>
+            </nav>
+            <div class="admin-user">
+                <div class="user-info">
+                    <span id="admin-user-name">Admin User</span>
+                    <button id="admin-logout" class="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Admin Main Content -->
+        <main class="admin-main">
+            <!-- Dashboard Section -->
+            <section id="dashboard-section" class="admin-section active">
+                <div class="admin-header">
+                    <h1>Dashboard</h1>
+                    <div class="admin-actions">
+                        <button class="primary-btn" id="refresh-dashboard">
+                            <i class="fas fa-sync-alt"></i> Refresh
+                        </button>
+                        <button class="secondary-btn" id="test-supabase-btn" onclick="adminPanel.testSupabaseConnection()">
+                            <i class="fas fa-database"></i> Test DB
+                        </button>
+                    </div>
+                </div>
+
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="total-orders">0</h3>
+                            <p>Total Orders</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="total-products">0</h3>
+                            <p>Total Products</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-content">
+                    <div class="admin-card">
+                        <h3>Recent Orders</h3>
+                        <div id="recent-orders">
+                            <p>Loading recent orders...</p>
+                        </div>
+                    </div>
+                    <div class="admin-card">
+                        <h3>Low Stock Products</h3>
+                        <div id="low-stock-products">
+                            <p>Loading low stock products...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Products Section -->
+            <section id="products-section" class="admin-section">
+                <div class="admin-header">
+                    <h1>Products</h1>
+                    <div class="admin-actions">
+                        <button class="primary-btn" id="add-product-btn">
+                            <i class="fas fa-plus"></i> Add Product
+                        </button>
+                    </div>
+                </div>
+
+                <div class="admin-card">
+                    <div class="table-controls">
+                        <input type="text" id="products-search" placeholder="Search products...">
+                        <select id="products-category-filter">
+                            <option value="">All Categories</option>
+                        </select>
+                        <select id="products-status-filter">
+                            <option value="">All Status</option>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table id="products-table">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Category</th>
+                                    <th>Price</th>
+                                    <th>Stock</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="products-table-body">
+                                <tr>
+                                    <td colspan="6">Loading products...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Orders Section -->
+            <section id="orders-section" class="admin-section">
+                <div class="admin-header">
+                    <h1>Orders</h1>
+                    <div class="admin-actions">
+                        <button class="secondary-btn" id="export-orders">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                    </div>
+                </div>
+
+                <div class="admin-card">
+                    <div class="table-controls">
+                        <input type="text" id="orders-search" placeholder="Search orders...">
+                        <select id="orders-status-filter">
+                            <option value="">All Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="processing">Processing</option>
+                            <option value="shipped">Shipped</option>
+                            <option value="delivered">Delivered</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                        <input type="date" id="orders-date-from" placeholder="From date">
+                        <input type="date" id="orders-date-to" placeholder="To date">
+                    </div>
+                    
+                    <div class="table-container">
+                        <table id="orders-table">
+                            <thead>
+                                <tr>
+                                    <th>Order #</th>
+                                    <th>Customer</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                    <th>Total</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="orders-table-body">
+                                <tr>
+                                    <td colspan="6">Loading orders...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Customers Section -->
+            <section id="customers-section" class="admin-section">
+                <div class="admin-header">
+                    <h1>Customers</h1>
+                    <div class="admin-actions">
+                        <button class="secondary-btn" id="export-customers">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                    </div>
+                </div>
+
+                <div class="admin-card">
+                    <div class="table-controls">
+                        <input type="text" id="customers-search" placeholder="Search customers...">
+                        <select id="customers-status-filter">
+                            <option value="">All Status</option>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table id="customers-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Orders</th>
+                                    <th>Total Spent</th>
+                                    <th>Joined</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="customers-table-body">
+                                <tr>
+                                    <td colspan="6">Loading customers...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+
+
+
+        </main>
+    </div>
+
+    <!-- Add Product Modal -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add/Edit Product</h2>
+                <button class="close-btn" id="close-product-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="product-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="product-name">Product Name *</label>
+                            <input type="text" id="product-name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="product-category">Category *</label>
+                            <select id="product-category" name="category" required>
+                                <option value="">Select Category</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-description">Description</label>
+                        <textarea id="product-description" name="description" rows="4"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-image">Image URL</label>
+                        <input type="url" id="product-image" name="image" placeholder="https://example.com/image.jpg">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="product-price">Price *</label>
+                            <input type="number" id="product-price" name="price" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="product-stock">Stock *</label>
+                            <input type="number" id="product-stock" name="stock" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="product-featured" name="featured">
+                                Featured Product
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label for="product-badge">Badge</label>
+                            <input type="text" id="product-badge" name="badge" placeholder="e.g., New, Sale">
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="secondary-btn" id="cancel-product">Cancel</button>
+                        <button type="submit" class="primary-btn">Save Product</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Scripts -->
+    <!-- Security Script - Will be disabled when admin panel is active -->
+    <script src="../js/security.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/supabase.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>
